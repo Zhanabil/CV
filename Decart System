@@ -1,0 +1,43 @@
+class NewProject    {
+
+    public static void func(int[] data)   {
+
+        int x0 = data[0];
+        int y0 = data[1];
+        System.out.println("The new center of the field: x0 = " + data[0] + " and y0 = " + data[1]);
+
+        System.out.print("House is located in: ");
+        if(data[2]+10 > x0 && data[3]+10 > y0)    {
+            if(data[2]+10 == 20 || data[3]+10 == 20)   {
+                System.out.print("the edge of ");
+            }
+            System.out.println("NE");
+        } else if(data[2]+10 > x0 && data[3]+10 < y0) {
+            if(data[2]+10 == 20 || data[3]+10 == 20)   {
+                System.out.print("the edge of ");
+            }
+            System.out.println("SE");
+        } else if(data[2]+10 < x0 && data[3]+10 > y0) {
+            if(data[2]+10 == 20 || data[3]+10 == 20)   {
+                System.out.print("the edge of ");
+            }
+            System.out.println("NW");
+        } else if (data[2]+10 < x0 && data[3]+10 < y0){
+            if(data[2]+10 == 20 || data[3]+10 == 20)   {
+                System.out.print("the edge of ");
+            }
+            System.out.println("SW");
+        } else {
+            System.out.println("Error");
+        }   
+    }
+    public static void main(String args[])  {
+
+        int[] data = {10, 10, -2, 3};
+        int[] data_two = {10, 10, 2, 10};
+        
+        func(data);
+        func(data_two);
+        
+    }
+}
