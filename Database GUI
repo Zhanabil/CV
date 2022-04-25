@@ -1,0 +1,160 @@
+package com.java;
+
+import javax.swing.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.*;
+
+public class IDBCall implements ActionListener {
+
+    JFrame frame, newFrame;
+
+    JPanel panelMain, panelCalled;
+
+    JLabel labelLogin, labelPassword;
+
+    JTextField userLogin, userPassword;
+
+    JButton logIn, cancel;
+
+    JTextField resultText;
+
+    Font myFont = new Font("Arial", Font.BOLD, 15);
+
+    String name, password;
+
+    ConnTestProject connTest;
+
+    public IDBCall() {
+
+        initUI();
+        addActionEvents();
+    }
+
+    public void initUI() {
+
+        frame = new JFrame();
+        frame.setTitle("Autorization");
+
+        panelMain = new JPanel();
+        panelMain.setBackground(Color.LIGHT_GRAY);
+        panelMain.setBounds(10, 40, 380, 150);
+        panelMain.setLayout(null);
+
+        labelLogin = new JLabel();
+        labelLogin.setText("user");
+        labelLogin.setFont(myFont);
+        labelLogin.setBounds(50, 30, 100, 30);
+
+        labelPassword = new JLabel();
+        labelPassword.setText("passwords");
+        labelPassword.setFont(myFont);
+        labelPassword.setBounds(50, 70, 100, 30);
+
+        userLogin = new JTextField();
+        userLogin.setBackground(Color.WHITE);
+        userLogin.setFont(myFont);
+        userLogin.setBounds(175, 30, 175, 30);
+
+        userPassword = new JTextField();
+        userPassword.setBackground(Color.WHITE);
+        userPassword.setFont(myFont);
+        userPassword.setBounds(175, 70, 175, 30);
+
+        logIn = new JButton("Log In");
+        logIn.setFont(myFont);
+        logIn.setBounds(10, 220, 190, 25);
+
+        cancel = new JButton("Cancel");
+        cancel.setFont(myFont);
+        cancel.setBounds(200, 220, 190, 25);
+
+
+        panelMain.add(labelLogin);
+        panelMain.add(userLogin);
+        panelMain.add(labelPassword);
+        panelMain.add(userPassword);
+
+        frame.add(panelMain);
+        frame.add(logIn);
+        frame.add(cancel);
+
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setSize(430, 300);
+        frame.setBackground(Color.WHITE);
+        frame.setVisible(true);
+        frame.setResizable(false);
+
+    }
+
+    public void addActionEvents() {
+
+        logIn.addActionListener(this);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+
+        if(e.getSource().equals(logIn)) {
+
+            name = userLogin.getText();
+            password = userPassword.getText();
+
+            if(userLogin != null) {
+
+                resultText = new JTextField();
+                resultText.setBackground(Color.LIGHT_GRAY);
+                resultText.setEditable(false);
+                resultText.setFont(myFont);
+
+                ResultSet resultSet = null;
+
+                try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydbtest", "root", "KekkeyGENkay146_9");
+                        Statement statement = connection.createStatement())           {
+
+                    resultSet = statement.executeQuery("SELECT * FROM user WHERE name = " + "'" + name + "'");
+
+                    while(resultSet.next()) {
+                        resultText.setText(resultSet.getString(4));
+                    }
+
+                } catch (SQLException sqlE) {
+                    sqlE.printStackTrace();
+                }
+
+                panelCalled = new JPanel();
+                panelCalled.setBackground(Color.WHITE);
+                panelCalled.setBounds(10, 10, 250, 110);
+                panelCalled.setLayout(new GridLayout(1, 1));
+
+                panelCalled.add(resultText);
+
+                newFrame = new JFrame();
+                newFrame.setTitle("Is it you?");
+
+                newFrame.add(panelCalled);
+
+                newFrame.setBackground(Color.lightGray);
+                newFrame.setLayout(null);
+                newFrame.setVisible(true);
+                newFrame.setSize(300, 200);
+                newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            }
+        }
+    }
+
+    public static void main(String args[]) {
+
+        new IDBCall();
+    }
+
+
+}
