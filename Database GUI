@@ -116,7 +116,7 @@ public class IDBCall implements ActionListener {
 
                 ResultSet resultSet = null;
 
-                try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydbtest", "root", "KekkeyGENkay146_9");
+                try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydbtest", "root", "password");
                         Statement statement = connection.createStatement())           {
 
                     resultSet = statement.executeQuery("SELECT * FROM user WHERE name = " + "'" + name + "'");
